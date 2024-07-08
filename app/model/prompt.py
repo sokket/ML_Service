@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 
-
+# это сущность для транзакций
 @dataclass
 class Prompt:
     id: int
