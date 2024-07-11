@@ -1,3 +1,4 @@
 postgres_data
 rabbitmq_data
-app/__pycache__
+.env
+**/__pycache__
