@@ -1,10 +1,29 @@
 from model.user import User
+from utils.config import get_settings
+from utils.hash import hash_password, verify_password
 
 class UserService:
-    def register(name: str, password: str) -> User:
-        # generate password hash, save to db
-        pass
 
-    def login(name: str, password: str) -> User:
-        # check password hash, load from db
-        pass
+    def __init__(self):
+        settings = get_settings()
+        self.salt = settings.PASSWORD_SALT
+
+    def register(self, session, name: str, password: str, is_admin: bool = False) -> User:
+        new_user = User(
+            name=name,
+            password_hash=hash_password(password, self.salt),
+            balance=0.0,
+            is_admin=is_admin
+        )
+        session.add(new_user) 
+        session.commit() 
+        session.refresh(new_user)
+        return new_user
+
+    def login(self, session, name: str, password: str) -> User:
+        user = session.query(User).filter(User.name == name).first()
+        if not user:
+            raise Exception("User not found")
+        if not verify_password(user.password_hash, password, self.salt):
+            raise Exception("Wrong password")
+        return user
