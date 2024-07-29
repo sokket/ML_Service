@@ -13,8 +13,8 @@ services:
   web-proxy:
     build: nginx/
     ports:
-      - 443:443
-      - 80:80
+      - 4431:443
+      - 8001:80
     depends_on:
       - app
   rabbitmq:
