@@ -2,3 +2,5 @@ postgres_data
 rabbitmq_data
 .env
 **/__pycache__
+local
+app/routes/.DS_Store
