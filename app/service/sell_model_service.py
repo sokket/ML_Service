@@ -48,7 +48,7 @@ class SellModelService:
   
         text = ''
         try:
-            text = self.model.run(user.id, prompt.text)
+            text = self.model.run(prompt.id, user.id, prompt.text)
         except Exception as e:
             # todo: log exception
             prompt.error = "processing error"

@@ -9,7 +9,7 @@ class Prompt(SQLModel, table=True):
     text: str
     asked_at: dt
     cost: float
-    answer: str
+    answer: Optional[str] # async
     error: Optional[str]
     answered_at: Optional[dt]
 
