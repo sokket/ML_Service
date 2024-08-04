@@ -10,6 +10,34 @@ services:
       - ./app:/app
     depends_on:
       - database
+      - rabbitmq
+  worker_1:
+    build: worker/
+    image: ml_llm_worker
+    env_file:
+      - ./worker/.env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./w1_data:/results
+  worker_2:
+    build: worker/
+    image: ml_llm_worker
+    env_file:
+      - ./worker/.env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./w2_data:/results
+  worker_3:
+    build: worker/
+    image: ml_llm_worker
+    env_file:
+      - ./worker/.env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./w3_data:/results
   web-proxy:
     build: nginx/
     ports:
@@ -19,6 +47,10 @@ services:
       - app
   rabbitmq:
       image: rabbitmq:3.13.4
+      environment:
+       - RABBITMQ_DEFAULT_USER=guest
+       - RABBITMQ_DEFAULT_PASS=guest
+       - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
       ports:
       - 15672:15672
       - 5672:5672
